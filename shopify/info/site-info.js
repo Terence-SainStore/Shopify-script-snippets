@@ -17,7 +17,7 @@
   const PANEL_ID = 'toolbox-site-info-panel';
   const STYLE_ID = 'toolbox-site-info-style';
   const LOG = '%c[Toolbox] site-info';
-  const LOG_STYLE = 'color:#95BF47;font-weight:bold';
+  const LOG_STYLE = 'color:#3b82f6;font-weight:bold';
 
   const pick = (obj, keys) => {
     if (!obj || typeof obj !== 'object') return null;
@@ -205,51 +205,50 @@
       z-index: 2147483646 !important;
       width: min(420px, calc(100vw - 24px));
       max-height: calc(100vh - 32px);
+      color-scheme: light;
     }
     .tb-root {
-      display: block;
-      max-height: calc(100vh - 32px);
-      overflow: auto;
-      background: #111827;
-      color: #f9fafb;
-      border: 1px solid #4b5563;
-      border-radius: 10px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.45);
-      font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      -webkit-font-smoothing: antialiased;
+      display: block; max-height: calc(100vh - 32px); overflow: auto;
+      background: #fff; color: #1b1f1a; border: 1px solid #dde3d8;
+      border-radius: 12px; box-shadow: 0 12px 32px rgba(27,31,26,.12);
+      font: 13px/1.45 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
     * { box-sizing: border-box; }
     .tb-hd {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 12px; border-bottom: 1px solid #374151;
-      position: sticky; top: 0; background: #111827; z-index: 1;
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-bottom: 1px solid #dde3d8;
+      position: sticky; top: 0; background: #fff; z-index: 2;
     }
-    .tb-hd strong { color: #95BF47; font-size: 13px; font-weight: 700; }
-    .tb-hd .tb-badge { margin-left: auto; font-size: 11px; font-weight: 600; }
-    .tb-actions { display: flex; gap: 6px; padding: 8px 12px; border-bottom: 1px solid #374151; }
+    .tb-hd-main { flex: 1; min-width: 0; }
+    .tb-hd strong { display: block; color: #1b1f1a; font-size: 15px; font-weight: 700; }
+    .tb-hd .tb-badge { display: block; margin-top: 2px; font-size: 12px; font-weight: 600; color: #5c6658; }
+    .tb-actions { display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0; justify-content: flex-end; }
     button {
-      appearance: none; border: 1px solid #6b7280; background: #1f2937; color: #f9fafb;
-      border-radius: 6px; padding: 5px 10px; cursor: pointer;
-      font: 12px/1.2 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      appearance: none; border: 1px solid #dde3d8; background: #fff; color: #1b1f1a;
+      border-radius: 8px; padding: 6px 10px; cursor: pointer; font: 12px/1.2 inherit;
     }
-    button:hover { border-color: #95BF47; }
-    .tb-body { padding: 10px 12px 14px; }
-    .tb-sec { margin: 0 0 14px; }
+    button:hover { border-color: #3b82f6; }
+    .tb-body { padding: 12px 14px 14px; background: #f6f7f4; }
+    .tb-sec {
+      margin: 0 0 10px; padding: 10px 12px; background: #fff;
+      border: 1px solid #dde3d8; border-radius: 10px;
+    }
     .tb-sec h4 {
-      margin: 0 0 6px; color: #93c5fd; font-size: 11px; font-weight: 700;
+      margin: 0 0 8px; color: #5c6658; font-size: 11px; font-weight: 700;
       text-transform: uppercase; letter-spacing: .04em;
     }
     table { width: 100%; border-collapse: collapse; }
-    tr { border-bottom: 1px solid #1f2937; }
+    tr { border-bottom: 1px solid #eef2ea; }
+    tr:last-child { border-bottom: 0; }
     .k, .v {
-      vertical-align: top; padding: 4px 0;
+      vertical-align: top; padding: 5px 0;
       font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
-    .k { width: 34%; color: #9ca3af; padding-right: 10px; }
-    .v { color: #ffffff; word-break: break-word; white-space: pre-wrap; font-weight: 500; }
-    .v.muted { color: #6b7280; font-weight: 400; }
-    .ok { color: #86efac; }
-    .bad { color: #fca5a5; }
+    .k { width: 34%; color: #5c6658; padding-right: 10px; }
+    .v { color: #1b1f1a; word-break: break-word; white-space: pre-wrap; font-weight: 500; }
+    .v.muted { color: #7a8576; font-weight: 400; }
+    .ok { color: #15803d; }
+    .bad { color: #b42318; }
   `;
 
   function formatCell(value) {
@@ -321,13 +320,15 @@
       <style>${PANEL_CSS}</style>
       <div class="tb-root">
         <div class="tb-hd">
-          <strong>Site Info</strong>
-          <span class="tb-badge ${okClass}">${okText}</span>
-        </div>
-        <div class="tb-actions">
-          <button type="button" data-act="refresh">刷新</button>
-          <button type="button" data-act="copy">复制 JSON</button>
-          <button type="button" data-act="hide">关闭</button>
+          <div class="tb-hd-main">
+            <strong>Site Info</strong>
+            <span class="tb-badge ${okClass}">${okText}</span>
+          </div>
+          <div class="tb-actions">
+            <button type="button" data-act="refresh">刷新</button>
+            <button type="button" data-act="copy">复制</button>
+            <button type="button" data-act="hide">关闭</button>
+          </div>
         </div>
         <div class="tb-body">
           ${renderSection('Page', {
